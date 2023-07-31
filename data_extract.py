@@ -46,15 +46,6 @@ headers = df.columns
 data_dict = {}
 
 # 定义替换规则
-replace_dict_year_group = {
-    'YEAR 9 (IG) - (1)': 2,
-    'YEAR 10(A) - (5)': 6,
-    'YEAR 11(A) - (3)': 4,
-    'YEAR 10 (IB) - (6)': 7,
-    'YEAR 9(Spring) - (9)': 10,
-    'TEST - (48)': 14
-}
-
 replace_dict_year_group_txt = {
     'YEAR 9 (IG) - (1)': 'G1-',
     'YEAR 10(A) - (5)': 'Pre-',
@@ -62,56 +53,6 @@ replace_dict_year_group_txt = {
     'YEAR 10 (IB) - (6)': 'Pre-IB',
     'YEAR 9(Spring) - (9)': 'Spring-',
     'TEST - (48)': 'Test-'
-}
-
-replace_dict_day ={
-    'Boarding': '2',
-    'Day': '3'
-}
-
-replace_dict_form_index = {
-    'G1-1': 2,
-    'G1-10': 3,
-    'G1-2': 4,
-    'G1-3': 5,
-    'G1-4': 6,
-    'G1-5': 7,
-    'G1-6': 8,
-    'G1-7': 9,
-    'G1-8': 10,
-    'G1-9': 11,
-    'Pre-1': 2,
-    'Pre-10': 3,
-    'Pre-2': 4,
-    'Pre-3': 5,
-    'Pre-4': 6,
-    'Pre-5': 7,
-    'Pre-6': 8,
-    'Pre-7': 9,
-    'Pre-8': 10,
-    'Pre-9': 11,
-    'AS-1': 2,
-    'AS-10': 3,
-    'AS-11': 4,
-    'AS-12': 5,
-    'AS-13': 6,
-    'AS-2': 7,
-    'AS-3': 8,
-    'AS-4': 9,
-    'AS-5': 10,
-    'AS-6': 11,
-    'AS-7': 12,
-    'AS-8': 13,
-    'AS-9': 14,
-    'Pre-IB1': 3,
-    'Pre-IB2': 4,
-    'Spring-1': 2,
-    'Spring-2': 3,
-    'Spring-3': 4,
-    'Spring-4': 5,
-    'Spring-5': 6,
-    'Spring-6': 7,
-    'Test-1': 2
 }
 
 # 创建新的字典存储替换后的值
@@ -129,13 +70,6 @@ for index, row in df.iterrows():
         # 将浮点数转换为整数
         if isinstance(value, float):
             value = int(value)
-        # 替换年级
-        if header == 'Year_Group':
-            if value in replace_dict_year_group:
-                replaced_value = replace_dict_year_group[value]
-        if header == 'Day':
-            if value in replace_dict_day:
-                replaced_value = replace_dict_day[value]
         # 存储到字典中
         if header not in data_dict:
             data_dict[header] = []
@@ -159,13 +93,6 @@ for index, row in df.iterrows():
                     year_group_txt = replace_dict_year_group_txt[year_group]
                     txtForm.append(f"{year_group_txt}{form}")
             replaced_data_dict['txtForm'] = txtForm
-            intForm = []
-            for txt in txtForm:
-                if txt in replace_dict_form_index:
-                    intForm.append(replace_dict_form_index[txt])
-                else:
-                    intForm.append(None)
-            replaced_data_dict['intForm'] = intForm
 
 # 存储不符合规则的行的行号
 invalid_row_number_only = list(invalid_rows.keys())
