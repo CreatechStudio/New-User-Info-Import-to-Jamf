@@ -21,6 +21,8 @@ from selenium.common.exceptions import NoSuchElementException
 
 import sys
 
+jss_url = "https://jamf.ulinkedu.com:8443/"
+
 class Main():
 
     def setup_method(self, method = None):
@@ -38,7 +40,7 @@ class Main():
         if len(wh_now) > len(wh_then):
             return set(wh_now).difference(set(wh_then)).pop()
     def importUser(self):
-        self.driver.get("https://jamf.ulinkedu.com:8443/")
+        self.driver.get(jss_url)
         self.driver.set_window_size(1800, 1061)
         time.sleep(10)
         self.driver.find_element(By.LINK_TEXT, "Users").click()
@@ -69,12 +71,12 @@ if __name__ == "__main__":
     if pub_valid_flag:
         test = Main()
         while True:
-            print("1. 新增学生")
-            print("2. 程序退出")
-            choice = input("请输入操作序号: ")
+            print("1. Add User")
+            print("2. Exit")
+            choice = input("Please enter your choice code: ")
             if choice == "1":
                 test.setup_method()
-                print("自动化开始")
+                print("Start Automation")
                 start_time = time.time()
                 test.importUser()
                 time.sleep(2)
@@ -82,14 +84,14 @@ if __name__ == "__main__":
                 # 计算执行时间
                 end_time = time.time()
                 execution_time = end_time - start_time
-                print(f"程序执行时间：{execution_time}秒")
-                print("自动化结束")
+                print(f"Excution Time：{execution_time}秒")
+                print("End Automation")
             elif choice == "2":
                 sys.exit()
             elif choice == "-1":
                 continue
             else:
-                print("无效序号，程序退出")
+                print("Invalid input, please re-enter！")
                 sys.exit()
     else:
-        print("请检查excel是否正确！")
+        print("Please check the excel format！")
