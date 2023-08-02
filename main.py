@@ -28,7 +28,6 @@ class Main():
     def setup_method(self, method = None):
         self.driver = webdriver.Chrome()
         self.vars = {}
-        self.driver.implicitly_wait(5)
 
     def teardown_method(self, method = None):
         self.driver.quit()
@@ -45,27 +44,43 @@ class Main():
         time.sleep(10)
         self.driver.find_element(By.LINK_TEXT, "Users").click()
         self.driver.switch_to.frame(0)
+        self.driver.find_element(By.CSS_SELECTOR, ".jamf-search > .jamf-button").click()
+        self.driver.find_element(By.LINK_TEXT, "New").click()
         for i in range(len(pub_data_dict['CN_Name'])):
             row_data = {header: values[i] for header, values in pub_data_dict.items()}
             replaced_data = {header: values[i] for header, values in pub_replaced_data_dict.items()}
             
-            stu_cnName = row_data['CN_Name']
-            stu_email_email = row_data['StuEmail']
-            stu_rp_tForm = replaced_data['txtForm']
+            # stu_cnName = row_data['CN_Name']
+            # stu_email_email = row_data['StuEmail']
+            # stu_rp_tForm = replaced_data['txtForm']
             
-            self.driver.find_element(By.CSS_SELECTOR, ".jamf-search > .jamf-button").click()
-            self.driver.find_element(By.LINK_TEXT, "New").click()
+            tea_loginID = row_data['Login_Name']
+            tea_relName = row_data['CN_Name']
+            tea_email_email = row_data['Email']
+            tea_dept = row_data['Department']
+            
+            
             self.driver.find_element(By.ID, "FIELD_USERNAME").click()
-            self.driver.find_element(By.ID, "FIELD_USERNAME").send_keys(stu_cnName)
+            self.driver.find_element(By.ID, "FIELD_USERNAME").clear()
+            # self.driver.find_element(By.ID, "FIELD_USERNAME").send_keys(stu_cnName)
+            self.driver.find_element(By.ID, "FIELD_USERNAME").send_keys(tea_loginID)
+            
+            self.driver.find_element(By.ID, "FIELD_REAL_NAME").click()
+            self.driver.find_element(By.ID, "FIELD_REAL_NAME").clear()
+            self.driver.find_element(By.ID, "FIELD_REAL_NAME").send_keys(tea_relName)
+            
             self.driver.find_element(By.ID, "FIELD_EMAIL_ADDRESS").click()
-            self.driver.find_element(By.ID, "FIELD_EMAIL_ADDRESS").send_keys(stu_email_email)
+            self.driver.find_element(By.ID, "FIELD_EMAIL_ADDRESS").clear()
+            # self.driver.find_element(By.ID, "FIELD_EMAIL_ADDRESS").send_keys(stu_email_email)
+            self.driver.find_element(By.ID, "FIELD_EMAIL_ADDRESS").send_keys(tea_email_email)
+            
             self.driver.find_element(By.ID, "FIELD_POSITION").click()
-            self.driver.find_element(By.ID, "FIELD_POSITION").send_keys(stu_rp_tForm)
+            self.driver.find_element(By.ID, "FIELD_POSITION").clear()
+            # self.driver.find_element(By.ID, "FIELD_POSITION").send_keys(stu_rp_tForm)
+            self.driver.find_element(By.ID, "FIELD_POSITION").send_keys(tea_dept)
+            
             self.driver.find_element(By.ID, "save-button").click()
-            self.driver.switch_to.default_content()
-            self.driver.find_element(By.ID, "done-button").click()
-            self.driver.switch_to.frame(0)
-            time.sleep(1)
+            self.driver.find_element(By.ID, "clone-button").click()
 
 if __name__ == "__main__":
     if pub_valid_flag:
