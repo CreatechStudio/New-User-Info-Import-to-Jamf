@@ -48,19 +48,6 @@ headers = df.columns
 # Create an empty dictionary to store data
 data_dict = {}
 
-# Define replacement rules
-replace_dict_year_group_txt = {
-    'YEAR 9 (IG) - (1)': 'G1-',
-    'YEAR 10(A) - (5)': 'Pre-',
-    'YEAR 11(A) - (3)': 'AS-',
-    'YEAR 10 (IB) - (6)': 'Pre-IB',
-    'YEAR 9(Spring) - (9)': 'Spring-',
-    'TEST - (48)': 'Test-'
-}
-
-# Create a new dictionary to store the replaced values
-replaced_data_dict = {}
-
 # Loop through each row/column
 for index, row in df.iterrows():
     for header in headers:
@@ -75,25 +62,6 @@ for index, row in df.iterrows():
         if header not in data_dict:
             data_dict[header] = []
         data_dict[header].append(value)
-        # Store replaced values in dictionary
-        if header not in replaced_data_dict:
-            replaced_data_dict[header] = []
-        replaced_data_dict[header].append(replaced_value)
-
-
-# Data splicing
-for index, row in df.iterrows():
-    for header in headers:
-
-        if header == 'Form':
-            txtForm = []
-            for i in range(len(data_dict['Year_Group'])):
-                year_group = data_dict['Year_Group'][i]
-                form = data_dict['Form'][i]
-                if year_group in replace_dict_year_group_txt:
-                    year_group_txt = replace_dict_year_group_txt[year_group]
-                    txtForm.append(f"{year_group_txt}{form}")
-            replaced_data_dict['txtForm'] = txtForm
 
 # Store the line number of the line that does not meet the rules
 invalid_row_number_only = list(invalid_rows.keys())
@@ -128,5 +96,4 @@ else:
 
 # Publish variables
 pub_data_dict = data_dict
-pub_replaced_data_dict = replaced_data_dict
 pub_valid_flag = valid_flag
