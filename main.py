@@ -27,7 +27,7 @@ for i in range(len(pub_data_dict['CN_Name'])):
     row_data = {header: values[i] for header, values in pub_data_dict.items()}
 
     stu_loginID = row_data['Login_ID']
-    # stu_relName = row_data['CN_Name']
+    stu_relName = row_data['CN_Name']
     stu_email_email = row_data['StuEmail']
     stu_form = row_data['Form']
 
@@ -35,7 +35,7 @@ for i in range(len(pub_data_dict['CN_Name'])):
     request_body = f"""
     <user>
         <name>{stu_loginID}</name>
-        <full_name>{stu_loginID}</full_name>
+        <full_name>{stu_relName}</full_name>
         <email>{stu_email_email}</email>
         <email_address>{stu_email_email}</email_address>
         <position>{stu_form}</position>
@@ -46,7 +46,7 @@ for i in range(len(pub_data_dict['CN_Name'])):
             </site>
         </sites>
     </user>
-    """
+    """.encode('utf-8')
 
     # 构建请求头
     headers = {
@@ -65,4 +65,3 @@ for i in range(len(pub_data_dict['CN_Name'])):
         print(f"用户 {stu_loginID} 创建成功!")
     else:
         print(f"用户 {stu_loginID} 创建失败，错误代码: {response.status_code}")
-        # print(response.text)
