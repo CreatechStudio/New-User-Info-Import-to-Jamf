@@ -4,10 +4,23 @@ from data_extract import pub_valid_flag
 import requests
 import time
 from xml.sax.saxutils import escape
+import json
 
 jss_url = str(pub_data_dict['JAMF'][0])
-base_url = jss_url + ""
 bearer_token = str(pub_data_dict['JAMF'][1])
+
+def get_last_user_id():
+        global max_id
+        id_url = jss_url + f"/JSSResource/users"
+        headers = {"accept": "application/json","Authorization": f"Bearer {bearer_token}",}
+        response = requests.get(id_url, headers=headers)
+        data = json.loads(response.content)
+        ids = [user['id'] for user in data['users']]
+        max_id = max(ids)
+
+get_last_user_id()
+
+last_user_id = max_id + 1
 
 for i in range(len(pub_data_dict['CN_Name'])):
     time.sleep(0.5)
@@ -41,10 +54,10 @@ for i in range(len(pub_data_dict['CN_Name'])):
         "Authorization": f"Bearer {bearer_token}",
     }
 
-    user_id = 771 + i
+    user_id = last_user_id + i
 
     # 发起请求
-    url = base_url + f"user_id"
+    url = jss_url + "/JSSResource/users/id/" + f"user_id"
     response = requests.post(url, data=request_body, headers=headers)
 
     # 处理响应
